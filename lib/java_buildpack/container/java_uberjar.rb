@@ -136,11 +136,6 @@ module JavaBuildpack
           paths.push(@droplet.additional_libraries.as_classpath.sub(/-cp /, ''))
         end
 
-        #@droplet.root_libraries.delete {|path|
-        #  check = allows.find_index {|token| path.to_s.include?(token)}
-        #  check.nil?
-        #}
-
         unless @droplet.root_libraries.empty?
           paths.push(@droplet.root_libraries.qualified_paths.join(':'))
         end
