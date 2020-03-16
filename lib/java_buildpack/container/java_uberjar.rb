@@ -56,11 +56,12 @@ module JavaBuildpack
       private
 
       UBERJAR_PROPERTY = 'uberjar'
-      CLASS_PATH_PROPERTY = 'class_path'
-      JAR_PATH_PROPERTY = 'jar_path'
+      CLASS_PATH_PROPERTY = 'classes_path'
+      JAR_PATH_PROPERTY = 'libs_path'
+      ALLOWED_LIBS_PROPERTY = 'libs_path'
       ARGUMENTS_PROPERTY = 'arguments'
 
-      private_constant :UBERJAR_PROPERTY, :ARGUMENTS_PROPERTY, :CLASS_PATH_PROPERTY, :JAR_PATH_PROPERTY
+      private_constant :UBERJAR_PROPERTY, :ARGUMENTS_PROPERTY, :CLASS_PATH_PROPERTY, :JAR_PATH_PROPERTY, :ALLOWED_LIBS_PROPERTY
 
       def release_text(classpath)
         target = "$PWD/#{uberjar}"
@@ -94,9 +95,22 @@ module JavaBuildpack
         @configuration[JAR_PATH_PROPERTY]
       end
 
+      def allowed_libs
+        @configuration[ALLOWED_LIBS_PROPERTY]
+      end
+
+      def internal_libs
+
+
+        unless @droplet.additional_libraries.empty?
+          paths.push(@droplet.additional_libraries.as_classpath.sub(/-cp /, ''))
+        end
+      end
+
       def classpath
         paths = []
 
+        # Add Project Provided Classes And Jars
         unless class_path.nil? || !class_path.kind_of?(String) || class_path.empty?
           cpc = @application.root + class_path
           if cpc.exist?
@@ -115,10 +129,22 @@ module JavaBuildpack
           end
         end
 
+        # Process Libs From Other Components - Remove If Not Allowed
+        allows = []
+        unless allowed_libs.nil? || !allowed_libs.kind_of?(String) || allowed_libs.empty?
+          allows = allowed_libs.split(',')
+        end
+
+        @droplet.additional_libraries.delete {|path|
+          allows.find_index {|token| path.to_s.include?(token)}.nil?
+        }
         unless @droplet.additional_libraries.empty?
           paths.push(@droplet.additional_libraries.as_classpath.sub(/-cp /, ''))
         end
 
+        @droplet.root_libraries.delete {|path|
+          allows.find_index {|token| path.to_s.include?(token)}.nil?
+        }
         unless @droplet.root_libraries.empty?
           paths.push(@droplet.root_libraries.qualified_paths.join(':'))
         end

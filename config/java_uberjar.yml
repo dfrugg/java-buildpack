@@ -16,6 +16,7 @@
 # Configuration for the Java Main container
 ---
 uberjar:
-class_path: "APP-INF/classes"
-jar_path: "APP-INF/libs"
+classes_path: "APP-INF/classes"
+libs_path: "APP-INF/libs"
+allowed_libs: "container_security_provider"
 arguments:
