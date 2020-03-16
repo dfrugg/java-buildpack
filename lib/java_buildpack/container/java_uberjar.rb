@@ -58,7 +58,7 @@ module JavaBuildpack
       UBERJAR_PROPERTY = 'uberjar'
       CLASS_PATH_PROPERTY = 'classes_path'
       JAR_PATH_PROPERTY = 'libs_path'
-      ALLOWED_LIBS_PROPERTY = 'libs_path'
+      ALLOWED_LIBS_PROPERTY = 'allowed_libs'
       ARGUMENTS_PROPERTY = 'arguments'
 
       private_constant :UBERJAR_PROPERTY, :ARGUMENTS_PROPERTY, :CLASS_PATH_PROPERTY, :JAR_PATH_PROPERTY, :ALLOWED_LIBS_PROPERTY
@@ -127,18 +127,20 @@ module JavaBuildpack
           allows = allowed_libs.split(',')
         end
 
-        @droplet.additional_libraries.delete {|path|
-          check = allows.find_index {|token| path.to_s.include?(token)}
-          check.nil?
-        }
+        #@droplet.additional_libraries.delete {|path|
+        #  check = allows.find_index {|token| path.to_s.include?(token)}
+        #  check.nil?
+        #}
+
         unless @droplet.additional_libraries.empty?
           paths.push(@droplet.additional_libraries.as_classpath.sub(/-cp /, ''))
         end
 
-        @droplet.root_libraries.delete {|path|
-          check = allows.find_index {|token| path.to_s.include?(token)}
-          check.nil?
-        }
+        #@droplet.root_libraries.delete {|path|
+        #  check = allows.find_index {|token| path.to_s.include?(token)}
+        #  check.nil?
+        #}
+
         unless @droplet.root_libraries.empty?
           paths.push(@droplet.root_libraries.qualified_paths.join(':'))
         end
