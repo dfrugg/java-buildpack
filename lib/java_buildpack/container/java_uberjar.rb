@@ -106,11 +106,13 @@ module JavaBuildpack
 
         unless jar_path.nil? || !jar_path.kind_of?(String) || jar_path.empty?
           cpj = @application.root + jar_path
-          cpj.each_child(false) {|f|
-            if f.to_s.end_with?(".jar")
-              paths.push("$PWD/#{jar_path}/#{f.to_s}")
-            end
-          }
+          if cpj.exist?
+            cpj.each_child(false) {|f|
+              if f.to_s.end_with?(".jar")
+                paths.push("$PWD/#{jar_path}/#{f.to_s}")
+              end
+            }
+          end
         end
 
         unless @droplet.additional_libraries.empty?
