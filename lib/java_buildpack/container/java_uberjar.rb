@@ -127,10 +127,10 @@ module JavaBuildpack
           allows = allowed_libs.split(',')
         end
 
-        #@droplet.additional_libraries.delete {|path|
-        #  check = allows.find_index {|token| path.to_s.include?(token)}
-        #  check.nil?
-        #}
+        @droplet.additional_libraries.delete_if {|path|
+          check = allows.find_index {|token| path.to_s.include?(token)}
+          check.nil?
+        }
 
         unless @droplet.additional_libraries.empty?
           paths.push(@droplet.additional_libraries.as_classpath.sub(/-cp /, ''))
