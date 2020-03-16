@@ -99,14 +99,6 @@ module JavaBuildpack
         @configuration[ALLOWED_LIBS_PROPERTY]
       end
 
-      def internal_libs
-
-
-        unless @droplet.additional_libraries.empty?
-          paths.push(@droplet.additional_libraries.as_classpath.sub(/-cp /, ''))
-        end
-      end
-
       def classpath
         paths = []
 
@@ -136,14 +128,16 @@ module JavaBuildpack
         end
 
         @droplet.additional_libraries.delete {|path|
-          allows.find_index {|token| path.to_s.include?(token)}.nil?
+          check = allows.find_index {|token| path.to_s.include?(token)}
+          check.nil?
         }
         unless @droplet.additional_libraries.empty?
           paths.push(@droplet.additional_libraries.as_classpath.sub(/-cp /, ''))
         end
 
         @droplet.root_libraries.delete {|path|
-          allows.find_index {|token| path.to_s.include?(token)}.nil?
+          check = allows.find_index {|token| path.to_s.include?(token)}
+          check.nil?
         }
         unless @droplet.root_libraries.empty?
           paths.push(@droplet.root_libraries.qualified_paths.join(':'))
