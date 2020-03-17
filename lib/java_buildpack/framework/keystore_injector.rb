@@ -39,6 +39,7 @@ module JavaBuildpack
       # (see JavaBuildpack::Component::BaseComponent#compile)
       def compile
         puts "#{'----->'.red.bold} #{'Keystore Injector'.blue.bold} processing PEMs at #{pem_path.to_s}"
+        puts "#{'----->'.red.bold} #{'Keystore Injector'.blue.bold} there are #{pem_path.children.count} files."
         pem_path.children {|f| import_pem(f) }
       end
 
