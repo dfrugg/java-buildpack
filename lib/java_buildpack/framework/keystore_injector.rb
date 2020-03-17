@@ -57,7 +57,7 @@ module JavaBuildpack
 
       # (see JavaBuildpack::Component::BaseComponent#release)
       def release
-        puts "#{'Keystore Injector'.blue.bold} completed import from #{@configuration['path']}"
+        nil
       end
 
       private
