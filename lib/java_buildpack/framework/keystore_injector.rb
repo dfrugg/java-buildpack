@@ -35,7 +35,12 @@ module JavaBuildpack
 
       # (see JavaBuildpack::Component::BaseComponent#detect)
       def detect
-        @keystore && @pem_path ? KeystoreInjector.to_s.dash_case : nil
+        if @keystore && @pem_path
+          puts "#{'Keystore Injector'.blue.bold} is activated."
+          KeystoreInjector.to_s.dash_case
+        else
+          nil
+        end
       end
 
       # (see JavaBuildpack::Component::BaseComponent#compile)
@@ -45,8 +50,9 @@ module JavaBuildpack
           pemport = "#{qualify_path @droplet.java_home.root, @droplet.root}/bin/keytool -import " +
                     "-file #{qualify_path f, @droplet.root} -alias #{f.basename} -storepass #{password} " +
                     "-keystore #{qualify_path @keystore, @droplet.root} -noprompt -storetype JKS"
-          puts "#{'----->'.red.bold} #{pemport}"
+          puts "#{'----->'.red.bold} Adding PEM #{f.basename}"
         }
+        nil
       end
 
       # (see JavaBuildpack::Component::BaseComponent#release)
