@@ -50,6 +50,7 @@ module JavaBuildpack
                   "-keystore #{keystore.to_s} -noprompt -storetype JKS"
 
         puts "#{'----->'.red.bold}  #{'Keystore Injector'.blue.bold} Running: #{pemport.yellow.bold}"
+        shell pemport
       end
 
       # (see JavaBuildpack::Component::BaseComponent#release)
