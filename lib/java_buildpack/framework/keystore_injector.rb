@@ -39,12 +39,15 @@ module JavaBuildpack
       # (see JavaBuildpack::Component::BaseComponent#compile)
       def compile
         puts "#{'----->'.red.bold} #{'Keystore Injector'.blue.bold} processing PEMs at #{pem_path.to_s}"
-        pem_path.children {|f|
-          pemport = "#{qualify_path @droplet.java_home.root, @droplet.root}/bin/keytool -import " +
-                    "-file #{qualify_path f, @droplet.root} -alias #{f.basename} -storepass #{password} " +
-                    "-keystore #{qualify_path keystore, @droplet.root} -noprompt -storetype JKS"
-          puts "#{'----->'.red.bold} Adding PEM #{f.basename}"
-        }
+        pem_path.children {|f| import_pem(f) }
+      end
+
+      # Adds a PEM file to the local keystore
+      def import_pem(pem_file)
+        puts "#{'----->'.red.bold} Adding PEM #{pem_file.basename}"
+        pemport = "#{qualify_path @droplet.java_home.root, @droplet.root}/bin/keytool -import " \
+                  "-file #{qualify_path pem_file, @droplet.root} -alias #{pem_file.basename} -storepass #{password} " \
+                  "-keystore #{qualify_path keystore, @droplet.root} -noprompt -storetype JKS"
       end
 
       # (see JavaBuildpack::Component::BaseComponent#release)
