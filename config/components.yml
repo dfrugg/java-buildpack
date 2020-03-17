@@ -61,7 +61,6 @@ frameworks:
   - "JavaBuildpack::Framework::Jmx"
   - "JavaBuildpack::Framework::JprofilerProfiler"
   - "JavaBuildpack::Framework::JrebelAgent"
-  - "JavaBuildpack::Framework::KeystoreInjector"
   - "JavaBuildpack::Framework::LunaSecurityProvider"
   - "JavaBuildpack::Framework::MariaDbJDBC"
   - "JavaBuildpack::Framework::MetricWriter"

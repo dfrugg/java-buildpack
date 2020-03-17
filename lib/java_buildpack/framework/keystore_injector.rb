@@ -35,14 +35,7 @@ module JavaBuildpack
 
       # (see JavaBuildpack::Component::BaseComponent#detect)
       def detect
-        puts "#{'----->'.red.bold} #{'Keystore Injector'.blue.bold} is DETECTING."
-        if keystore && pem_path
-          puts "#{'----->'.red.bold} #{'Keystore Injector'.blue.bold} is DETECTED."
-          KeystoreInjector.to_s.dash_case
-        else
-          puts "#{'----->'.red.bold} #{'Keystore Injector'.blue.bold} is NOT DETECTED."
-          nil
-        end
+        keystore && pem_path ? KeystoreInjector.to_s.dash_case : nil
       end
 
       # (see JavaBuildpack::Component::BaseComponent#compile)
@@ -67,15 +60,10 @@ module JavaBuildpack
       private
 
       def valid_path(basepath, subpath)
-        puts "#{'----->'.red.bold} #{'Keystore Injector'.blue.bold} is looking at #{subpath}."
         unless subpath.nil? || !subpath.kind_of?(String) || subpath.empty?
           fullpath = basepath + subpath
           if fullpath.exist?
-            puts "#{'----->'.red.bold} #{'Keystore Injector'.blue.bold} #{fullpath.to_s} EXISTS."
             fullpath
-          else
-            puts "#{'----->'.red.bold} #{'Keystore Injector'.blue.bold} #{fullpath.to_s} NOT EXISTS."
-            nil
           end
         end
       end
