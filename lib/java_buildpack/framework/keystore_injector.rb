@@ -29,15 +29,16 @@ module JavaBuildpack
 
       def initialize(context)
         super(context)
+        puts "#{'----->'.red.bold} #{'Keystore Injector'.blue.bold} is INITIALIZING."
         @logger = JavaBuildpack::Logging::LoggerFactory.instance.get_logger KeystoreInjector
-        @keystore  = store
+        @keystore = store
         @pem_path = pem_path
       end
 
       # (see JavaBuildpack::Component::BaseComponent#detect)
       def detect
+        puts "#{'----->'.red.bold} #{'Keystore Injector'.blue.bold} is DETECTING."
         if @keystore && @pem_path
-          puts "#{'Keystore Injector'.blue.bold} is activated."
           KeystoreInjector.to_s.dash_case
         else
           nil
@@ -46,6 +47,7 @@ module JavaBuildpack
 
       # (see JavaBuildpack::Component::BaseComponent#compile)
       def compile
+        puts "#{'----->'.red.bold} #{'Keystore Injector'.blue.bold} is COMPILING."
         puts "#{'Keystore Injector'.blue.bold} processing PEMs at #{@configuration['path']}"
         @pem_path.children {|f|
           pemport = "#{qualify_path @droplet.java_home.root, @droplet.root}/bin/keytool -import " +
@@ -58,7 +60,8 @@ module JavaBuildpack
 
       # (see JavaBuildpack::Component::BaseComponent#release)
       def release
-        nil
+        puts "#{'----->'.red.bold} #{'Keystore Injector'.blue.bold} is RELEASING."
+        # Do nothing
       end
 
       private
