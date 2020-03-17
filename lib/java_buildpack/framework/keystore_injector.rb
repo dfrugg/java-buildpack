@@ -31,14 +31,12 @@ module JavaBuildpack
         super(context)
         puts "#{'----->'.red.bold} #{'Keystore Injector'.blue.bold} is INITIALIZING."
         @logger = JavaBuildpack::Logging::LoggerFactory.instance.get_logger KeystoreInjector
-        @keystore = store
-        @pem_path = pem_path
       end
 
       # (see JavaBuildpack::Component::BaseComponent#detect)
       def detect
         puts "#{'----->'.red.bold} #{'Keystore Injector'.blue.bold} is DETECTING."
-        if @keystore && @pem_path
+        if keystore && pem_path
           puts "#{'----->'.red.bold} #{'Keystore Injector'.blue.bold} is DETECTED."
           KeystoreInjector.to_s.dash_case
         else
@@ -51,10 +49,10 @@ module JavaBuildpack
       def compile
         puts "#{'----->'.red.bold} #{'Keystore Injector'.blue.bold} is COMPILING."
         puts "#{'Keystore Injector'.blue.bold} processing PEMs at #{@configuration['path']}"
-        @pem_path.children {|f|
+        pem_path.children {|f|
           pemport = "#{qualify_path @droplet.java_home.root, @droplet.root}/bin/keytool -import " +
                     "-file #{qualify_path f, @droplet.root} -alias #{f.basename} -storepass #{password} " +
-                    "-keystore #{qualify_path @keystore, @droplet.root} -noprompt -storetype JKS"
+                    "-keystore #{qualify_path keystore, @droplet.root} -noprompt -storetype JKS"
           puts "#{'----->'.red.bold} Adding PEM #{f.basename}"
         }
         nil
@@ -82,7 +80,7 @@ module JavaBuildpack
         end
       end
 
-      def store
+      def keystore
         valid_path(@droplet.java_home.root, @configuration['store'])
       end
 
