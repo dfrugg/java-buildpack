@@ -48,6 +48,8 @@ module JavaBuildpack
         pemport = "#{@droplet.java_home.root.to_s}/bin/keytool -import " \
                   "-file #{pem_file.to_s} -alias #{pem_file.basename} -storepass #{password} " \
                   "-keystore #{keystore.to_s} -noprompt -storetype JKS"
+
+        puts "#{'----->'.red.bold}  #{'Keystore Injector'.blue.bold} Running: #{pemport.yellow.bold}"
       end
 
       # (see JavaBuildpack::Component::BaseComponent#release)
