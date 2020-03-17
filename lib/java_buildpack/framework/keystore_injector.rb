@@ -45,13 +45,10 @@ module JavaBuildpack
       # Adds a PEM file to the local keystore
       def import_pem(pem_file)
         if pem_file.to_s.end_with?(".pem")
-          puts "#{'----->'.red.bold}  #{'Keystore Injector'.blue.bold} Adding PEM #{pem_file.basename.to_s.yellow.bold}"
-          pemport = "#{@droplet.java_home.root.to_s}/bin/keytool -import " \
-                    "-file #{pem_file.to_s} -alias #{pem_file.basename} -storepass #{password} " \
-                    "-keystore #{keystore.to_s} -noprompt -storetype JKS"
-
-          puts "#{'----->'.red.bold}  #{'Keystore Injector'.blue.bold} Running: #{pemport.yellow.bold}"
-          shell pemport
+          puts "#{'----->'.red.bold} #{'Keystore Injector'.blue.bold} Adding PEM #{pem_file.basename.to_s.yellow.bold}"
+          shell "#{@droplet.java_home.root.to_s}/bin/keytool -import " \
+                "-file #{pem_file.to_s} -alias #{pem_file.basename} -storepass #{password} " \
+                "-keystore #{keystore.to_s} -noprompt -storetype JKS"
         end
       end
 
