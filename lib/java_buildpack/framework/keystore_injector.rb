@@ -17,6 +17,7 @@
 
 require 'java_buildpack/component/base_component'
 require 'java_buildpack/framework'
+require 'java_buildpack/util/colorize'
 require 'java_buildpack/util/dash_case'
 
 module JavaBuildpack
