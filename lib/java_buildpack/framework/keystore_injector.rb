@@ -19,7 +19,6 @@ require 'java_buildpack/component/base_component'
 require 'java_buildpack/framework'
 require 'java_buildpack/util/colorize'
 require 'java_buildpack/util/dash_case'
-require 'java_buildpack/util/qualify_path'
 
 module JavaBuildpack
   module Framework
@@ -46,9 +45,9 @@ module JavaBuildpack
       # Adds a PEM file to the local keystore
       def import_pem(pem_file)
         puts "#{'----->'.red.bold}  #{'Keystore Injector'.blue.bold} Adding PEM #{pem_file.basename.to_s.yellow.bold}"
-        pemport = "#{qualify_path @droplet.java_home.root, @droplet.root}/bin/keytool -import " \
-                  "-file #{qualify_path pem_file, @droplet.root} -alias #{pem_file.basename} -storepass #{password} " \
-                  "-keystore #{qualify_path keystore, @droplet.root} -noprompt -storetype JKS"
+        pemport = "#{@droplet.java_home.root.to_s}/bin/keytool -import " \
+                  "-file #{pem_file.to_s} -alias #{pem_file.basename} -storepass #{password} " \
+                  "-keystore #{keystore.to_s} -noprompt -storetype JKS"
       end
 
       # (see JavaBuildpack::Component::BaseComponent#release)
