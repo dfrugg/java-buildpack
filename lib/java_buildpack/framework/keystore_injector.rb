@@ -19,6 +19,7 @@ require 'java_buildpack/component/base_component'
 require 'java_buildpack/framework'
 require 'java_buildpack/util/colorize'
 require 'java_buildpack/util/dash_case'
+require 'java_buildpack/util/qualify_path'
 
 module JavaBuildpack
   module Framework
@@ -39,13 +40,12 @@ module JavaBuildpack
       # (see JavaBuildpack::Component::BaseComponent#compile)
       def compile
         puts "#{'----->'.red.bold} #{'Keystore Injector'.blue.bold} processing PEMs at #{pem_path.to_s}"
-        puts "#{'----->'.red.bold} #{'Keystore Injector'.blue.bold} there are #{pem_path.children.count} files."
         pem_path.each_child {|f| import_pem(f) }
       end
 
       # Adds a PEM file to the local keystore
       def import_pem(pem_file)
-        puts "#{'----->'.red.bold}  #{'Keystore Injector'.blue.bold} Adding PEM #{pem_file.basename}"
+        puts "#{'----->'.red.bold}  #{'Keystore Injector'.blue.bold} Adding PEM #{pem_file.basename.yellow.bold}"
         pemport = "#{qualify_path @droplet.java_home.root, @droplet.root}/bin/keytool -import " \
                   "-file #{qualify_path pem_file, @droplet.root} -alias #{pem_file.basename} -storepass #{password} " \
                   "-keystore #{qualify_path keystore, @droplet.root} -noprompt -storetype JKS"
