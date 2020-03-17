@@ -58,7 +58,7 @@ module JavaBuildpack
 
       def valid_path(basepath, subpath)
         unless subpath.nil? || !subpath.kind_of?(String) || subpath.empty?
-          fullpath = basepath + storepath
+          fullpath = basepath + subpath
           if fullpath.exist?
             fullpath
           end
