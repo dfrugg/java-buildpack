@@ -38,7 +38,7 @@ module JavaBuildpack
 
       # (see JavaBuildpack::Component::BaseComponent#compile)
       def compile
-        puts "#{'----->'.red.bold} #{'Keystore Injector'.blue.bold} processing PEMs at #{@configuration['path']}"
+        puts "#{'----->'.red.bold} #{'Keystore Injector'.blue.bold} processing PEMs at #{pem_path.to_s}"
         pem_path.children {|f|
           pemport = "#{qualify_path @droplet.java_home.root, @droplet.root}/bin/keytool -import " +
                     "-file #{qualify_path f, @droplet.root} -alias #{f.basename} -storepass #{password} " +
